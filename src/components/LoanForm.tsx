@@ -1,35 +1,23 @@
-import { useState } from 'react';
+import { useState } from "react";
 //import { api } from '../services/api';
-import { ChevronDown, ChevronLeft, User } from 'lucide-react';
+import { ChevronDown, ChevronLeft, User } from "lucide-react";
+interface LoanFormProps {
+  valor: number;
+  onChangeValor: (valor: number) => void;
+  onSimular: () => void;
+}
 
-export function LoanForm() {
-  const [valor, setValor] = useState(10000);
-
+export function LoanForm({ valor, onChangeValor, onSimular }: LoanFormProps) {
   const formatCurrency = (value: number): string => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
     }).format(value);
   };
 
-  interface SliderChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
-
-  const handleSliderChange = (e: SliderChangeEvent): void => {
-    setValor(Number(e.target.value));
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChangeValor(Number(e.target.value));
   };
-  // const handleSubmit = async () => {
-  //   try {
-  //     const { data } = await api.post('/emprestimos', {
-  //       cpf: '12345678900', // mock
-  //       valorSolicitado: valor,
-  //       numeroParcelas: parcelas,
-  //     });
-  //     setResposta(data);
-  //   } catch (err: any) {
-  //     alert(err.response?.data?.message || 'Erro ao solicitar empréstimo');
-  //   }
-  // };
-
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -59,12 +47,16 @@ export function LoanForm() {
         </div>
 
         {/* Title */}
-        <h1 className="text-2xl font-semibold text-gray-800 mb-8">Crédito Consignado</h1>
+        <h1 className="text-2xl font-semibold text-gray-800 mb-8">
+          Crédito Consignado
+        </h1>
 
         {/* Simular Empréstimo Section */}
         <div className="mb-8">
-          <h2 className="text-teal-600 text-lg font-medium mb-4">Simular Empréstimo</h2>
-          
+          <h2 className="text-teal-600 text-lg font-medium mb-4">
+            Simular Empréstimo
+          </h2>
+
           {/* Info Card */}
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-8">
             <div className="flex items-start space-x-3">
@@ -75,7 +67,8 @@ export function LoanForm() {
               </div>
               <div className="flex-1">
                 <p className="text-gray-700 text-sm leading-relaxed">
-                  Você possui saldo para Crédito Consignado pela empresa Seguros Seguradora. Faça uma simulação! Digite quanto você precisa:
+                  Você possui saldo para Crédito Consignado pela empresa Seguros
+                  Seguradora. Faça uma simulação! Digite quanto você precisa:
                 </p>
               </div>
             </div>
@@ -102,10 +95,14 @@ export function LoanForm() {
                 onChange={handleSliderChange}
                 className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer"
                 style={{
-                  background: `linear-gradient(to right, #14b8a6 0%, #14b8a6 ${((valor - 1000) / (50000 - 1000)) * 100}%, #d1d5db ${((valor - 1000) / (50000 - 1000)) * 100}%, #d1d5db 100%)`
+                  background: `linear-gradient(to right, #14b8a6 0%, #14b8a6 ${
+                    ((valor - 100) / (50000 - 1000)) * 100
+                  }%, #d1d5db ${
+                    ((valor - 1000) / (50000 - 1000)) * 100
+                  }%, #d1d5db 100%)`,
                 }}
               />
-              <div 
+              <div
                 className="absolute top-0 w-4 h-4 bg-teal-600 rounded-full border-2 border-white shadow-md transform -translate-y-1 -translate-x-2 pointer-events-none"
                 style={{ left: `${((valor - 1000) / (50000 - 1000)) * 100}%` }}
               ></div>
@@ -117,15 +114,19 @@ export function LoanForm() {
             <button className="px-8 py-3 border-2 border-teal-600 text-teal-600 rounded-full font-medium hover:bg-teal-50 transition-colors">
               Voltar
             </button>
-            <button className="px-8 py-3 bg-teal-600 text-white rounded-full font-medium hover:bg-teal-700 transition-colors">
+            <button
+              onClick={onSimular}
+              className="px-8 py-3 bg-teal-600 text-white rounded-full font-medium hover:bg-teal-700 transition-colors"
+            >
               Simular empréstimo
             </button>
           </div>
         </div>
       </div>
 
-      <style dangerouslySetInnerHTML={{
-        __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
           input[type="range"]::-webkit-slider-thumb {
             appearance: none;
             width: 16px;
@@ -152,9 +153,9 @@ export function LoanForm() {
             background: transparent;
             border: none;
           }
-        `
-      }} />
+        `,
+        }}
+      />
     </div>
   );
-
 }
