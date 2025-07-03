@@ -3,6 +3,7 @@ import { LoanForm } from "../components/LoanForm";
 import { LoanOptions } from "../components/LoanOptions"; // novo componente
 import { LoanConfirmation } from "../components/LoanConfirmation";
 import { LoanSummary } from "../components/LoanSummary";
+import { LoanStatus } from "../components/LoanStatus";
 
 export default function Home() {
   const [valor, setValor] = useState(10000);
@@ -10,7 +11,7 @@ export default function Home() {
     number | null
   >(null);
   const [etapa, setEtapa] = useState<
-    "form" | "parcelas" | "resumo" | "confirmacao"
+    "form" | "parcelas" | "resumo" | "confirmacao" | "status"
   >("form");
 
   return (
@@ -52,9 +53,17 @@ export default function Home() {
           parcelas={parcelasSelecionadas}
           onVoltar={() => setEtapa("resumo")}
           onSolicitar={() => {
-            // Aqui fazemos o POST /emprestimos
-            console.log("Solicitar empréstimo!");
-            // Depois pode ir para a tela de resultado (sucesso ou rejeição)
+            setEtapa("status");
+          }}
+        />
+      )}
+      {etapa === "status" && (
+        <LoanStatus
+          onVoltar={() => setEtapa("confirmacao")}
+          onNovoEmprestimo={() => {
+            setParcelasSelecionadas(null);
+            setValor(10000);
+            setEtapa("form");
           }}
         />
       )}
