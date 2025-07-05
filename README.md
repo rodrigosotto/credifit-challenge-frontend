@@ -70,7 +70,7 @@ http://localhost:5173
 ## 📄 Licença e Direitos
 
 Este projeto é de uso exclusivo para fins avaliativos e de aprendizado.  
-**Todos os direitos sobre o código, layout e lógica pertencem ao autor.**  
+**Todos os direitos sobre o código e lógica pertencem ao autor.**  
 Reprodução, cópia ou redistribuição total/parcial sem autorização prévia é proibida.
 
 ---
