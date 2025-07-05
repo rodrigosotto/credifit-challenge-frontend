@@ -95,6 +95,7 @@ export function LoanStatus({
                 titulo={`Empréstimo ${index + 1}`}
                 status={e.status === "rejeitado" ? "reprovado" : e.status}
                 motivo={e.motivo}
+                valorSolicitado={e.valorSolicitado}
                 empresa="Seguros Seguradora"
                 vencimento={formatarVencimento(e.criadoEm)}
                 parcelas={e.numeroParcelas}
