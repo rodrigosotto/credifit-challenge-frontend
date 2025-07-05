@@ -1,5 +1,3 @@
-import { useState } from "react";
-//import { api } from '../services/api';
 import { ChevronDown, ChevronLeft, User } from "lucide-react";
 interface LoanFormProps {
   valor: number;

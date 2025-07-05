@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { LoanForm } from "../components/LoanForm";
-import { LoanOptions } from "../components/LoanOptions"; // novo componente
+import { LoanOptions } from "../components/LoanOptions";
 import { LoanConfirmation } from "../components/LoanConfirmation";
 import { LoanSummary } from "../components/LoanSummary";
 import { LoanStatus } from "../components/LoanStatus";
+import { api } from "../services/api";
 
 export default function Home() {
+  const [cpf] = useState("12345678888");
+
   const [valor, setValor] = useState(10000);
   const [parcelasSelecionadas, setParcelasSelecionadas] = useState<
     number | null
@@ -31,7 +34,6 @@ export default function Home() {
           onSelecionarParcela={(parcelas) => {
             setParcelasSelecionadas(parcelas);
             setEtapa("resumo");
-            console.log("Parcelas selecionadas:", parcelas);
           }}
         />
       )}
@@ -42,7 +44,6 @@ export default function Home() {
           parcelas={parcelasSelecionadas}
           onVoltar={() => setEtapa("parcelas")}
           onConfirmar={() => {
-            console.log("Enviar solicitação!");
             setEtapa("confirmacao");
           }}
         />
@@ -52,17 +53,29 @@ export default function Home() {
           valor={valor}
           parcelas={parcelasSelecionadas}
           onVoltar={() => setEtapa("resumo")}
-          onSolicitar={() => {
-            setEtapa("status");
+          onSolicitar={async () => {
+            try {
+              await api.post("/emprestimos", {
+                cpf: cpf,
+                valorSolicitado: valor,
+                numeroParcelas: parcelasSelecionadas,
+              });
+
+              setEtapa("status");
+            } catch (err) {
+              alert("Erro ao solicitar empréstimo.");
+            }
           }}
         />
       )}
+
       {etapa === "status" && (
         <LoanStatus
+          cpf={cpf}
           onVoltar={() => setEtapa("confirmacao")}
           onNovoEmprestimo={() => {
-            setParcelasSelecionadas(null);
             setValor(10000);
+            setParcelasSelecionadas(null);
             setEtapa("form");
           }}
         />

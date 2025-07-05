@@ -6,7 +6,7 @@ interface LoanCardDetalhadoProps {
   vencimento: string;
   parcelas: number;
   valorParcela: number;
-  valorTotal?: number; // apenas se aprovado
+  valorTotal?: number;
   expandido?: boolean;
 }
 
@@ -19,7 +19,6 @@ export function LoanCardDetalhado({
   parcelas,
   valorParcela,
   valorTotal,
-  expandido = true,
 }: LoanCardDetalhadoProps) {
   const formatCurrency = (v: number) =>
     new Intl.NumberFormat("pt-BR", {

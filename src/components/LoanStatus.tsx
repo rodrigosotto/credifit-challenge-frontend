@@ -1,12 +1,49 @@
 import { ChevronLeft, ChevronDown, User } from "lucide-react";
 import { AccordionCard } from "../components/AccordionCard";
+import { useEffect, useState } from "react";
+
+import { api } from "../services/api";
 
 interface LoanStatusProps {
   onVoltar: () => void;
   onNovoEmprestimo: () => void;
+  cpf: string;
+}
+interface Emprestimo {
+  cpf: string;
+  valorSolicitado: number;
+  numeroParcelas: number;
+  status: "aprovado" | "rejeitado";
+  motivo?: string;
+  criadoEm: string;
 }
 
-export function LoanStatus({ onVoltar, onNovoEmprestimo }: LoanStatusProps) {
+export function LoanStatus({
+  cpf,
+  onVoltar,
+  onNovoEmprestimo,
+}: LoanStatusProps) {
+  const [emprestimos, setEmprestimos] = useState<Emprestimo[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { data } = await api.get(`/emprestimos/${cpf}`);
+        setEmprestimos(data);
+      } catch (err) {
+        alert("Erro ao carregar empréstimos.");
+      }
+    }
+
+    fetchData();
+  }, [cpf]);
+
+  function formatarVencimento(iso: string) {
+    const data = new Date(iso);
+    data.setMonth(data.getMonth() + 1);
+    return data.toLocaleDateString("pt-BR");
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -52,25 +89,19 @@ export function LoanStatus({ onVoltar, onNovoEmprestimo }: LoanStatusProps) {
 
           {/* Cards de status */}
           <div className="space-y-4">
-            <AccordionCard
-              titulo="SOLICITAÇÃO DE EMPRÉSTIMO 01"
-              status="reprovado"
-              motivo="Reprovado por score"
-              empresa="Seguros Seguradora"
-              vencimento="29/11/2022"
-              parcelas={2}
-              valorParcela={5000}
-            />
-
-            <AccordionCard
-              titulo="EMPRÉSTIMO CORRENTE 01"
-              status="aprovado"
-              empresa="Seguros Seguradora"
-              vencimento="29/11/2022"
-              parcelas={1}
-              valorParcela={5000}
-              valorTotal={10000}
-            />
+            {emprestimos.map((e, index) => (
+              <AccordionCard
+                key={e.criadoEm + index}
+                titulo={`Empréstimo ${index + 1}`}
+                status={e.status === "rejeitado" ? "reprovado" : e.status}
+                motivo={e.motivo}
+                empresa="Seguros Seguradora"
+                vencimento={formatarVencimento(e.criadoEm)}
+                parcelas={e.numeroParcelas}
+                valorParcela={Math.floor(e.valorSolicitado / e.numeroParcelas)}
+                valorTotal={e.valorSolicitado}
+              />
+            ))}
           </div>
         </div>
 
