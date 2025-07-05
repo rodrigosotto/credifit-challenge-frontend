@@ -1,4 +1,3 @@
-# Projeto criado com React + TypeScript + Vite + TailwindCss
 # 💳 Credifit Challenge — Frontend
 
 Aplicação frontend desenvolvida em React + TypeScript + Tailwind CSS, que simula o fluxo completo de solicitação de empréstimos consignados via plataforma Credifit.
