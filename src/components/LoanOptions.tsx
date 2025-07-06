@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronDown, User } from "lucide-react";
+import { useState } from "react";
 
 interface LoanOptionsProps {
   valor: number;
@@ -19,6 +20,9 @@ export function LoanOptions({
   };
 
   const opcoesParcelas = [1, 2, 3, 4];
+  const [parcelaSelecionada, setParcelaSelecionada] = useState<number | null>(
+    null
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -78,8 +82,12 @@ export function LoanOptions({
             {opcoesParcelas.map((qtd) => (
               <button
                 key={qtd}
-                onClick={() => onSelecionarParcela(qtd)}
-                className="flex justify-between items-center px-4 py-3 bg-white rounded-lg shadow hover:shadow-md border-l-4 border-orange-500 transition"
+                onClick={() => setParcelaSelecionada(qtd)}
+                className={`flex justify-between items-center px-4 py-3 rounded-lg shadow hover:shadow-md transition border-l-4 ${
+                  parcelaSelecionada === qtd
+                    ? "bg-orange-300 border-orange-600"
+                    : "bg-white border-orange-500"
+                }`}
               >
                 <span className="text-gray-600 font-medium">{qtd}x de</span>
                 <span className="text-teal-600 font-semibold">
@@ -98,8 +106,17 @@ export function LoanOptions({
               Voltar
             </button>
             <button
-              disabled
-              className="px-6 py-3 bg-gray-200 text-gray-500 rounded-full font-medium cursor-not-allowed"
+              onClick={() => {
+                if (parcelaSelecionada !== null) {
+                  onSelecionarParcela(parcelaSelecionada);
+                }
+              }}
+              disabled={parcelaSelecionada === null}
+              className={`px-6 py-3 rounded-full font-medium transition ${
+                parcelaSelecionada !== null
+                  ? "bg-teal-600 text-white hover:bg-teal-700"
+                  : "bg-gray-200 text-gray-500 cursor-not-allowed"
+              }`}
             >
               Seguinte
             </button>
