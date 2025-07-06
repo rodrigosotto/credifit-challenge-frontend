@@ -1,4 +1,6 @@
 import { ChevronDown, ChevronLeft, User } from "lucide-react";
+import logoCredifit from "../assets/img/header/logoCredifit.png";
+
 interface LoanFormProps {
   valor: number;
   onChangeValor: (valor: number) => void;
@@ -22,10 +24,7 @@ export function LoanForm({ valor, onChangeValor, onSimular }: LoanFormProps) {
       {/* Header */}
       <header className="bg-teal-600 text-white px-4 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-            <span className="text-white font-bold text-sm">C</span>
-          </div>
-          <span className="font-bold text-lg">credifit</span>
+          <img src={logoCredifit} alt="Credifit" className="h-7 w-auto" />
         </div>
         <div className="flex items-center space-x-2">
           <User className="w-5 h-5" />
@@ -100,10 +99,10 @@ export function LoanForm({ valor, onChangeValor, onSimular }: LoanFormProps) {
                   }%, #d1d5db 100%)`,
                 }}
               />
-              <div
+              {/* <div
                 className="absolute top-0 w-4 h-4 bg-teal-600 rounded-full border-2 border-white shadow-md transform -translate-y-1 -translate-x-2 pointer-events-none"
                 style={{ left: `${((valor - 1000) / (50000 - 1000)) * 100}%` }}
-              ></div>
+              ></div> */}
             </div>
           </div>
 
